@@ -20,7 +20,7 @@ var currentCloud;
 // ***** Setup function ***** //
 function setup(){
     fill(0, 0, 83);
-    createCanvas(600, 450);
+    createCanvas(600, 600);
     colorMode(HSB);
     frameRate(30);
     button = select('#submit');
@@ -67,13 +67,9 @@ function draw(){
       text('Wind Speed ' + str(currentWindSpeed) + ' meters per second', 20, 85);
       text('Cloudiness ' + str(currentCloud) + '%', 20, 120);
       var hueColor = map(currentTemp, minTemp, maxTemp, minColor, maxColor);
-      fill(hueColor, 100, 100);
+      fill(hueColor, currentCloud + 10, 100);
       ellipse(x, 100, currentTemp*3, currentTemp*3);
       x = x + random(-currentWindSpeed + 1, currentWindSpeed - 1);
-      y = y - 1
-      if (y < 0) {
-        y = height;
-      }
     }
     else{
       text('Loading...', 20, 20);
@@ -81,7 +77,7 @@ function draw(){
     // Legend Box Drawing;
     noFill();
     stroke(0, 0, 83);
-    rect(5, 155, 250, 200);
+    rect(5, 155, 250, 250);
     // Legend Drawing;
     noStroke();
     fill(0)
@@ -99,13 +95,17 @@ function draw(){
     fill(0)
     text("Low Temperature", 60, 287);
     ellipse(30 + (random (-.75,.75)), 310 + (random(-.75,.75)), 20, 20);
-    fill(0)
     text("Low Wind Speed", 60, 312);
     ellipse(30 + (random (-2,2)), 335 + (random(-2,2)), 20, 20);
-    fill(0)
     text("High Wind Speed", 60, 337);
-
-
+    fill(201, 25, 79);
+    ellipse(30, 365, 20, 20);
+    fill(0);
+    text("Low Cloudiness", 60, 367);
+    fill(201, 200, 79);
+    ellipse(30, 390, 20, 20);
+    fill(0);
+    text("High Cloudiness", 60, 392);
 }
    
 
