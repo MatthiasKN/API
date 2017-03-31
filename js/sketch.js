@@ -6,7 +6,7 @@ var city = 'New York City';
 var units = 'metric';
 var maxTemp = 40;
 var minTemp = -5;
-var maxColor = 360;
+var maxColor = 400;
 var minColor = 240;
 var currentTemp = 0;
 var currentHumidity = 0;
@@ -14,20 +14,21 @@ var button;
 var cityInput;
 var currentWindSpeed;
 var currentWindDirection;
-var x = 0;
-var img;
-var icon;
+var x, y;
+var currentCloud;
 
 // ***** Setup function ***** //
 function setup(){
-    createCanvas(800, 800);
+    fill(0, 0, 83);
+    createCanvas(600, 450);
     colorMode(HSB);
     frameRate(30);
     button = select('#submit');
     cityInput = select('#city');
     button.mousePressed(queryAPI);
-    iconNumber = icon;
-    img = loadImage("../img/codes/" + iconNumber);
+    x = 370;
+    y = height;
+    //img = loadImage("../img/codes/" + iconNumber);
 }
 
 function queryAPI(){
@@ -43,7 +44,6 @@ function getWeatherData(apiData){
   currentWindSpeed = weatherData.wind.speed;
   currentWindDirection = weatherData.wind.deg;
   currentCloud = weatherData.clouds.all;
-  icon = weatherData.weather[0].id;
   
   // console.log(weatherData.main.temp);
 }
@@ -51,26 +51,62 @@ function getWeatherData(apiData){
 // ***** Draw function ***** //
 function draw(){
     background(255);
-    ellipseWindMove = (x += currentWindSpeed);
+    // Data Box Drawing;
+    noFill();
+    stroke(0, 0, 83);
+    strokeWeight(2);
+    rect(5, 1, 250, 140);
+    //ellipseWindMove = x += currentWindSpeed;
     //iconNumber = "../img/codes/" + icon + ".png";
-    img = loadImage(iconNumber);
+    //img = loadImage(iconNumber);
     if (weatherData) {
       noStroke();
       fill(0);
-      text('Temperature: ' + str(currentTemp) + ' C', 20, 20);
-      text('Humidity: ' + str(currentHumidity) + '%', 20, 40);
-      text('Wind Speed ' + str(currentWindSpeed) + ' meters per second', 20, 60);
-      text('Wind Direction ' + str(currentWindDirection) + ' degrees', 20, 80);
-      text('Cloudiness ' + str(currentCloud) + '%', 20, 100);
-      text("ImgID: " + icon, 20, 120);
+      text( "WEATHER DATA:", 20, 20);
+      text('Temperature: ' + str(currentTemp) + ' C', 20, 50);
+      text('Wind Speed ' + str(currentWindSpeed) + ' meters per second', 20, 85);
+      text('Cloudiness ' + str(currentCloud) + '%', 20, 120);
       var hueColor = map(currentTemp, minTemp, maxTemp, minColor, maxColor);
       fill(hueColor, 100, 100);
-      ellipse(200 , 200, currentTemp*5, currentTemp*5);
-      image(img, 40, 20)  
+      ellipse(x, 100, currentTemp*3, currentTemp*3);
+      x = x + random(-currentWindSpeed + 1, currentWindSpeed - 1);
+      y = y - 1
+      if (y < 0) {
+        y = height;
+      }
     }
     else{
       text('Loading...', 20, 20);
     }
-   
+    // Legend Box Drawing;
+    noFill();
+    stroke(0, 0, 83);
+    rect(5, 155, 250, 200);
+    // Legend Drawing;
+    noStroke();
+    fill(0)
+    text("LEGEND: ", 20, 172);
+    ellipse(30, 200, 40, 40);
+    text("Temperature further from Zero", 60, 200);
+    ellipse(30, 236, 15, 15);
+    text("Temperature closer to Zero", 60, 237);
+    fill(356, 79, 94);
+    ellipse(30, 260, 20, 20);
+    fill(0);
+    text("High Temperature", 60, 262);
+    fill(201, 100, 79);
+    ellipse(30, 285, 20, 20);
+    fill(0)
+    text("Low Temperature", 60, 287);
+    ellipse(30 + (random (-.75,.75)), 310 + (random(-.75,.75)), 20, 20);
+    fill(0)
+    text("Low Wind Speed", 60, 312);
+    ellipse(30 + (random (-2,2)), 335 + (random(-2,2)), 20, 20);
+    fill(0)
+    text("High Wind Speed", 60, 337);
+
+
 }
+   
+
  
